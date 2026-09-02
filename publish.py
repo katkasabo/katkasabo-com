@@ -20,6 +20,16 @@ TPL  = os.path.join(SITE, "template.html")
 OUT  = os.path.join(SITE, "index.html")
 IMGD = os.path.join(SITE, "img")
 TARGET_WORDS = 100
+DRIVE = os.path.expanduser(
+    "~/Library/CloudStorage/GoogleDrive-katka@sabotageworks.com"
+    " (6-3-26 8:09 AM)/My Drive/Sabotage Works/blog-inbox")
+INBOXES = [
+    ("blog-inbox (Drive)", DRIVE),
+    ("inbox/", os.path.join(ROOT, "inbox")),
+    ("Downloads", os.path.expanduser("~/Downloads")),
+    ("Desktop", os.path.expanduser("~/Desktop")),
+]
+IMG_EXT = (".jpg", ".jpeg", ".png", ".heic", ".gif", ".webp")
 TOLERANCE = 15  # +/- words before we flag it
 
 # ---------- data ----------
@@ -52,10 +62,15 @@ def ingest_image(src, date_iso, idx):
         sys.exit("image not found: %s" % src)
     os.makedirs(IMGD, exist_ok=True)
     ext = os.path.splitext(src)[1].lower()
+    # iPhone HEIC and everything else lands as jpeg; sips handles the conversion.
     keep = ext if ext in (".png", ".gif", ".svg", ".webp") else ".jpg"
     name = "%s-%d%s" % (date_iso, idx, keep)
     dest = os.path.join(IMGD, name)
-    shutil.copyfile(src, dest)
+    if ext in (".heic", ".heif") or (keep == ".jpg" and ext != ".jpg" and ext != ".jpeg"):
+        subprocess.run(["sips", "-s", "format", "jpeg", src, "--out", dest],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    else:
+        shutil.copyfile(src, dest)
     if keep in (".jpg", ".png"):
         # cap the long edge so pages stay light
         subprocess.run(["sips", "-Z", "1600", dest],
@@ -275,6 +290,34 @@ def cmd_add(args):
     if args.push:
         push("Day %02d: %s" % (n, args.title or iso))
 
+def cmd_inbox(args):
+    """List recent images across every drop-off point, newest first."""
+    now = datetime.datetime.now()
+    found = []
+    for label, d in INBOXES:
+        if not os.path.isdir(d):
+            continue
+        for fn in os.listdir(d):
+            if not fn.lower().endswith(IMG_EXT):
+                continue
+            full = os.path.join(d, fn)
+            age = now - datetime.datetime.fromtimestamp(os.path.getmtime(full))
+            if age.days > args.days:
+                continue
+            found.append((age, label, full, os.path.getsize(full) // 1024))
+    if not found:
+        print("no images in the last %d days. Drop-off points:" % args.days)
+        for label, d in INBOXES:
+            print("  %-20s %s" % (label, d))
+        return
+    found.sort()
+    print("recent images (newest first):")
+    for age, label, full, kb in found[:args.limit]:
+        h = age.days * 24 + age.seconds // 3600
+        when = "%dd ago" % age.days if age.days else ("%dh ago" % h if h else "just now")
+        print("  [%-18s] %-9s %5d KB  %s" % (label, when, kb, full))
+
+
 def cmd_status(args):
     d = load()
     today = datetime.date.today()
@@ -309,6 +352,11 @@ def main():
 
     b = sub.add_parser("build", help="regenerate index.html")
     b.set_defaults(fn=lambda args: build())
+
+    i = sub.add_parser("inbox", help="list recent images ready to attach")
+    i.add_argument("--days", type=int, default=7)
+    i.add_argument("--limit", type=int, default=15)
+    i.set_defaults(fn=cmd_inbox)
 
     s = sub.add_parser("status", help="show the 30-day board in the terminal")
     s.set_defaults(fn=cmd_status)

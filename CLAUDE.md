@@ -28,9 +28,24 @@ Defaults to today's date. Other options:
 - `--caption "..."` (repeatable, pairs with `--image` in order)
 - `--push` commits and pushes; omit it to stage the change locally first
 
+### Getting a photo in
+
+Katka cannot paste image bytes into chat in a way that reaches disk. Drop-off points,
+checked by `python3 publish.py inbox`:
+
+1. **Drive** `Sabotage Works/blog-inbox/` — works from the phone (Google Drive app ->
+   Sabotage Works -> blog-inbox -> Upload). This is the phone-to-Mac path.
+2. `inbox/` in this repo (gitignored)
+3. `~/Downloads` and `~/Desktop` — for AirDrop and screenshots
+
+She says "the picture is in blog-inbox" (or names the file); run `publish.py inbox`,
+confirm which file, then pass it with `--image`. HEIC from an iPhone is converted to
+JPEG automatically.
+
 ### Other commands
 
 ```
+python3 publish.py inbox     # recent images across all drop-off points
 python3 publish.py status    # the 30-day board in the terminal
 python3 publish.py build     # regenerate index.html
 python3 publish.py push -m "message"
