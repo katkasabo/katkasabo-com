@@ -66,22 +66,39 @@ def ingest_image(src, date_iso, idx):
     keep = ext if ext in (".png", ".gif", ".svg", ".webp") else ".jpg"
     name = "%s-%d%s" % (date_iso, idx, keep)
     dest = os.path.join(IMGD, name)
-    if ext in (".heic", ".heif") or (keep == ".jpg" and ext != ".jpg" and ext != ".jpeg"):
+    needs_convert = ext not in (".jpg", ".jpeg", ".png", ".gif", ".svg", ".webp")
+    if needs_convert:
         subprocess.run(["sips", "-s", "format", "jpeg", src, "--out", dest],
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     else:
         shutil.copyfile(src, dest)
+
+    # Only touch the pixels when the image is actually too big. Re-encoding an
+    # already-optimised JPEG makes the file larger, not smaller.
     if keep in (".jpg", ".png"):
-        # cap the long edge so pages stay light
-        subprocess.run(["sips", "-Z", "1600", dest],
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        if keep == ".jpg":
-            subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "72",
-                            dest, "--out", dest],
+        w = long_edge(dest)
+        if w and w > 1600:
+            subprocess.run(["sips", "-Z", "1600", dest],
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            if keep == ".jpg":
+                subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "72",
+                                dest, "--out", dest],
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    # Never ship something heavier than what she handed us.
+    if not needs_convert and os.path.getsize(dest) > os.path.getsize(src):
+        shutil.copyfile(src, dest)
+
     kb = os.path.getsize(dest) // 1024
     print("  image -> 30-day/img/%s (%d KB)" % (name, kb))
     return "img/" + name
+
+
+def long_edge(path):
+    r = subprocess.run(["sips", "-g", "pixelWidth", "-g", "pixelHeight", path],
+                       capture_output=True, text=True)
+    dims = [int(x.split(":")[1]) for x in r.stdout.splitlines() if ":" in x and x.split(":")[1].strip().isdigit()]
+    return max(dims) if dims else None
 
 # ---------- rendering ----------
 
