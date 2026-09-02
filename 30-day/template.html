@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>30 Days, 100 Words · Katka Sabo</title>
+<meta name="description" content="A public writing experiment: 100 words a day, every day, for 30 days. 2 September to 1 October 2026.">
+<meta property="og:title" content="30 Days, 100 Words">
+<meta property="og:description" content="A public writing experiment: 100 words a day, every day, for 30 days.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://katkasabo.com/30-day/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23E74040'/><text x='50' y='72' font-size='62' font-family='Helvetica,Arial' font-weight='bold' fill='%23F5F0EB' text-anchor='middle'>30</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+<style>
+/* ---- Sabotage Works design tokens ---- */
+:root{
+  --bg:#F5F0EB;          /* sabotage warm gray   */
+  --card:#FAF7F5;
+  --ink:#1F1F1F;         /* sabotage charcoal    */
+  --muted:#666666;
+  --line:#E2D9D4;
+  --line-soft:#EBE6E0;
+  --red:#E74040;         /* sabotage red        */
+  --cherry:#A93232;
+  --teal:#2EC2B3;        /* sabotage teal       */
+  --blush:#F5C7BD;
+  --on-red:#FFFFFF;
+  --grad:linear-gradient(135deg,#E74040,#A93232);
+  --glow:0 0 40px rgba(231,64,64,.30);
+  --shadow:0 1px 2px rgba(31,31,31,.04), 0 4px 16px rgba(31,31,31,.06);
+  --r:.5rem;
+  --display:"Montserrat","Helvetica Neue",Arial,sans-serif;
+  --body:"Lato","Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#1F1F1F; --card:#262626; --ink:#F5F0EB; --muted:#CCB299;
+    --line:#333333; --line-soft:#2E2E2E; --blush:#4A2E2A;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 18px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px; margin:0 auto; padding:0 20px 96px}
+a{color:var(--red); text-underline-offset:3px}
+a:hover{color:var(--cherry)}
+
+/* ---------- masthead ---------- */
+.mast{padding:56px 0 30px; border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); margin:0 0 16px
+}
+.eyebrow a{color:var(--muted); text-decoration:none; border-bottom:1px solid var(--line)}
+.eyebrow a:hover{color:var(--red); border-color:var(--red)}
+h1{
+  font-family:var(--display); font-weight:700; font-size:clamp(36px,7.5vw,56px);
+  line-height:1.0; letter-spacing:-.025em; margin:0 0 16px
+}
+h1 .thin{
+  display:block;
+  background:var(--grad); -webkit-background-clip:text; background-clip:text;
+  color:transparent
+}
+.dek{font-size:17.5px; color:var(--muted); max-width:52ch; margin:0; font-weight:400}
+.dek em{color:var(--ink); font-style:normal; font-weight:700}
+
+/* ---------- stats ---------- */
+.stats{
+  display:flex; flex-wrap:wrap; gap:0; margin:28px 0 0;
+  border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
+  background:var(--card); box-shadow:var(--shadow)
+}
+.stat{flex:1 1 0; min-width:96px; padding:13px 16px; border-right:1px solid var(--line-soft)}
+.stat:last-child{border-right:0}
+.stat b{
+  display:block; font-family:var(--display); font-weight:700;
+  font-size:22px; line-height:1.1; letter-spacing:-.02em
+}
+.stat span{
+  display:block; font-family:var(--mono); font-size:10px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); margin-top:6px
+}
+.stat.on b{color:var(--red)}
+
+/* ---------- section chrome ---------- */
+section{padding-top:42px}
+.sec-head{display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin:0 0 16px}
+h2{
+  font-family:var(--mono); font-weight:700; font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--muted); margin:0
+}
+.legend{font-family:var(--mono); font-size:10.5px; color:var(--muted); display:flex; gap:14px; flex-wrap:wrap}
+.legend i{width:9px; height:9px; border-radius:2px; display:inline-block; margin-right:5px}
+.legend .w{background:var(--grad)}
+.legend .t{background:transparent; border:2px solid var(--ink)}
+.legend .m{background:transparent; border:1px dashed var(--muted)}
+
+/* ---------- calendar ---------- */
+.cal{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:14px; box-shadow:var(--shadow)}
+.dow{
+  display:grid; grid-template-columns:repeat(7,1fr); gap:6px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--muted); padding:0 0 9px; text-align:center
+}
+.grid{display:grid; grid-template-columns:repeat(7,1fr); gap:6px}
+.cell{
+  position:relative; aspect-ratio:1/1; border-radius:6px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; text-decoration:none; border:1px solid var(--line-soft);
+  background:transparent; color:var(--muted);
+  transition:transform .12s ease, box-shadow .12s ease
+}
+.cell .n{font-family:var(--display); font-weight:700; font-size:14px; line-height:1; letter-spacing:-.01em}
+.cell .d{font-family:var(--mono); font-size:8px; letter-spacing:.1em; text-transform:uppercase; opacity:.6; line-height:1; margin-top:1px}
+.cell.void{border-color:transparent; opacity:.22}
+.cell.future{background:color-mix(in srgb, var(--blush) 20%, transparent); border-color:transparent}
+.cell.missed{border-style:dashed; border-color:var(--muted); opacity:.75}
+.cell.written{background:var(--grad); border-color:transparent; color:var(--on-red)}
+.cell.written .d{opacity:.85}
+.cell.written:hover{transform:translateY(-2px); box-shadow:var(--glow)}
+.cell.today{box-shadow:0 0 0 2px var(--ink)}
+.cell.has-img::after{
+  content:""; position:absolute; top:5px; right:5px; width:5px; height:5px;
+  border-radius:50%; background:currentColor; opacity:.85
+}
+@media (max-width:560px){
+  .stat{flex:1 1 44%}
+  .stat:nth-child(2){border-right:0}
+  .stat:nth-child(-n+2){border-bottom:1px solid var(--line-soft)}
+}
+@media (max-width:520px){
+  .grid,.dow{gap:4px}
+  .cell .d{font-size:7px}
+}
+@media (max-width:380px){
+  .cell .d{display:none}
+}
+
+/* ---------- entries ---------- */
+.entry{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+  padding:26px 28px; margin:0 0 16px; box-shadow:var(--shadow); scroll-margin-top:18px
+}
+.entry:target{box-shadow:0 0 0 2px var(--red), var(--shadow)}
+.e-head{
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid var(--line-soft)
+}
+.day-no{
+  font-family:var(--mono); font-weight:700; font-size:10.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--on-red); background:var(--grad);
+  padding:5px 9px; border-radius:4px
+}
+.e-date{font-family:var(--mono); font-size:11.5px; color:var(--muted); letter-spacing:.02em}
+.e-wc{font-family:var(--mono); font-size:11.5px; color:var(--teal); margin-left:auto; white-space:nowrap; font-weight:700}
+.e-wc.off{color:var(--muted); font-weight:400}
+.e-title{
+  font-family:var(--display); font-weight:700; font-size:24px; line-height:1.2;
+  letter-spacing:-.02em; margin:0 0 12px
+}
+.e-body{font-size:18px; line-height:1.7}
+.e-body p{margin:0 0 1em}
+.e-body p:last-child{margin-bottom:0}
+.e-figs{margin:20px 0 0; display:grid; gap:12px}
+.e-figs figure{margin:0}
+.e-figs img{width:100%; height:auto; border-radius:var(--r); display:block; border:1px solid var(--line-soft)}
+.e-figs figcaption{font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:8px}
+.e-permalink{font-family:var(--mono); font-size:12px; color:var(--muted); text-decoration:none; opacity:0; transition:opacity .15s}
+.entry:hover .e-permalink{opacity:1}
+
+.empty{
+  background:var(--card); border:1px dashed var(--line); border-radius:var(--r);
+  padding:44px 28px; text-align:center; color:var(--muted)
+}
+.empty b{display:block; font-family:var(--display); font-weight:700; font-size:21px; color:var(--ink); margin-bottom:8px}
+
+footer{
+  margin-top:56px; padding-top:22px; border-top:1px solid var(--line);
+  font-family:var(--mono); font-size:11px; color:var(--muted);
+  display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap
+}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--red)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow"><a href="/">Katka Sabo</a> &nbsp;/&nbsp; The 30-day experiment</p>
+    <h1>30 Days<span class="thin">100 Words</span></h1>
+    <p class="dek">One hundred words, every day, in public, from <em>2 September</em> to <em>1 October 2026</em>. No theme. No editing myself into silence. The only rule is that it gets posted.</p>
+    <!--STATS-->
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <h2>The board</h2>
+      <div class="legend">
+        <span><i class="w"></i>written</span>
+        <span><i class="t"></i>today</span>
+        <span><i class="m"></i>missed</span>
+      </div>
+    </div>
+    <!--CALENDAR-->
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>The writing</h2></div>
+    <!--ENTRIES-->
+  </section>
+
+  <footer>
+    <span>Katka Sabo &middot; katkasabo.com</span>
+    <span><a href="https://sabotageworks.com">sabotageworks.com</a></span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  // Keep "today" and "missed" honest even if the page was built days ago.
+  var t = new Date(), pad = function(n){return (n<10?'0':'')+n};
+  var today = t.getFullYear()+'-'+pad(t.getMonth()+1)+'-'+pad(t.getDate());
+  document.querySelectorAll('.cell[data-date]').forEach(function(c){
+    var d = c.getAttribute('data-date');
+    c.classList.toggle('today', d === today);
+    if(c.classList.contains('written') || c.classList.contains('void')) return;
+    c.classList.toggle('missed', d < today);
+    c.classList.toggle('future', d > today);
+  });
+  // Smooth-scroll from a calendar cell to its entry.
+  document.querySelectorAll('a.cell.written').forEach(function(c){
+    c.addEventListener('click', function(e){
+      var id = c.getAttribute('href'), target = id && document.querySelector(id);
+      if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); history.replaceState(null,'',id); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
