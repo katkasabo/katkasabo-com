@@ -177,6 +177,22 @@ h2{
 .e-figs img{max-width:100%; max-height:620px; width:auto; height:auto; border-radius:var(--r);
             display:block; margin:0 auto; border:1px solid var(--line-soft)}
 .e-figs figcaption{font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:8px}
+/* ---------- later notes on an entry ---------- */
+.e-comments{margin:24px 0 0; padding-top:20px; border-top:1px solid var(--line-soft)}
+.comment{border-left:2px solid var(--teal); padding-left:16px; margin:0 0 20px}
+.comment:last-child{margin-bottom:0}
+.c-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:9px}
+.c-label{
+  font-family:var(--mono); font-weight:700; font-size:10px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--teal)
+}
+.c-date{font-family:var(--mono); font-size:11px; color:var(--muted)}
+.c-wc{font-family:var(--mono); font-size:11px; color:var(--muted); margin-left:auto}
+.c-body{font-size:16.5px; line-height:1.66}
+.c-body p{margin:0 0 .85em}
+.c-body p:last-child{margin-bottom:0}
+.comment .e-figs{margin-top:16px}
+.comment .e-figs img{max-height:460px}
 .e-permalink{font-family:var(--mono); font-size:12px; color:var(--muted); text-decoration:none; opacity:0; transition:opacity .15s}
 .entry:hover .e-permalink{opacity:1}
 

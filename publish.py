@@ -57,14 +57,14 @@ def words(text):
 
 # ---------- images ----------
 
-def ingest_image(src, date_iso, idx):
+def ingest_image(src, slot, idx):
     if not os.path.exists(src):
         sys.exit("image not found: %s" % src)
     os.makedirs(IMGD, exist_ok=True)
     ext = os.path.splitext(src)[1].lower()
     # iPhone HEIC and everything else lands as jpeg; sips handles the conversion.
     keep = ext if ext in (".png", ".gif", ".svg", ".webp") else ".jpg"
-    name = "%s-%d%s" % (date_iso, idx, keep)
+    name = "%s-%d%s" % (slot, idx, keep)
     dest = os.path.join(IMGD, name)
     needs_convert = ext not in (".jpg", ".jpeg", ".png", ".gif", ".svg", ".webp")
     if needs_convert:
@@ -101,6 +101,28 @@ def long_edge(path):
     return max(dims) if dims else None
 
 # ---------- rendering ----------
+
+def ingest_all(images, captions, slot):
+    out = []
+    for i, src in enumerate(images or [], 1):
+        rel = ingest_image(src, slot, i)
+        cap = captions[i - 1] if captions and len(captions) >= i else ""
+        out.append({"src": rel, "caption": cap} if cap else {"src": rel})
+    return out
+
+
+def render_figs(images, fallback_alt):
+    if not images:
+        return ""
+    parts = []
+    for im in images:
+        src = im["src"] if isinstance(im, dict) else im
+        cap = im.get("caption", "") if isinstance(im, dict) else ""
+        cap_html = ("<figcaption>%s</figcaption>" % html.escape(cap)) if cap else ""
+        parts.append('<figure><img src="%s" alt="%s" loading="lazy">%s</figure>'
+                     % (html.escape(src), html.escape(cap or fallback_alt), cap_html))
+    return '\n      <div class="e-figs">%s</div>' % "".join(parts)
+
 
 def render_body(text):
     blocks = [b.strip() for b in re.split(r"\n\s*\n", text.strip()) if b.strip()]
@@ -168,16 +190,7 @@ def render_entries(d):
         n = day_number(d, date)
         wc = e.get("words") or words(e.get("body", ""))
         off = ""
-        figs = ""
-        if e.get("images"):
-            parts = []
-            for im in e["images"]:
-                src = im["src"] if isinstance(im, dict) else im
-                cap = im.get("caption", "") if isinstance(im, dict) else ""
-                cap_html = ("<figcaption>%s</figcaption>" % html.escape(cap)) if cap else ""
-                parts.append('<figure><img src="%s" alt="%s" loading="lazy">%s</figure>'
-                             % (html.escape(src), html.escape(cap or e.get("title", "")), cap_html))
-            figs = '\n      <div class="e-figs">%s</div>' % "".join(parts)
+        figs = render_figs(e.get("images"), e.get("title", ""))
         title = ('<h3 class="e-title">%s</h3>' % html.escape(e["title"])) if e.get("title") else ""
         out.append(
             '<article class="entry" id="day-%02d">\n'
@@ -187,11 +200,46 @@ def render_entries(d):
             '        <a class="e-permalink" href="#day-%02d">#</a>\n'
             '        <span class="e-wc%s">%d words</span>\n'
             '      </div>\n'
-            '      %s\n      <div class="e-body">\n        %s\n      </div>%s\n'
+            '      %s\n      <div class="e-body">\n        %s\n      </div>%s%s\n'
             '    </article>'
             % (n, n, date.strftime("%A, %-d %B %Y"), n, off, wc,
-               title, render_body(e.get("body", "")), figs))
+               title, render_body(e.get("body", "")), figs, render_comments(e)))
     return "\n    ".join(out)
+
+def render_comments(e):
+    cs = e.get("comments") or []
+    if not cs:
+        return ""
+    out = []
+    for c in cs:
+        when = c.get("date", "")
+        try:
+            when = datetime.date.fromisoformat(when).strftime("%-d %B")
+        except ValueError:
+            pass
+        out.append(
+            '<div class="comment">\n'
+            '          <div class="c-head">\n'
+            '            <span class="c-label">Later</span>\n'
+            '            <span class="c-date">%s</span>\n'
+            '            <span class="c-wc">%d words</span>\n'
+            '          </div>\n'
+            '          <div class="c-body">\n            %s\n          </div>%s\n'
+            '        </div>'
+            % (html.escape(when), c.get("words") or words(c.get("body", "")),
+               render_body(c.get("body", "")),
+               render_figs(c.get("images"), "")))
+    return ('\n      <div class="e-comments">\n        %s\n      </div>'
+            % "\n        ".join(out))
+
+
+def entry_words(e):
+    """An entry's words plus every word she added to it later."""
+    total = e.get("words") or words(e.get("body", ""))
+    for c in e.get("comments") or []:
+        total += c.get("words") or words(c.get("body", ""))
+    return total
+
 
 def render_stats(d, today):
     start, n = start_date(d), d["days"]
@@ -205,7 +253,7 @@ def render_stats(d, today):
         elif cur != today:  # today not yet written does not break the streak
             break
         cur -= datetime.timedelta(days=1)
-    total = sum(e.get("words") or words(e.get("body", "")) for e in d["entries"].values())
+    total = sum(entry_words(e) for e in d["entries"].values())
     left = n - elapsed
     cells = [
         ("on" if written else "", written, "of %d written" % n),
@@ -280,12 +328,7 @@ def cmd_add(args):
     existed = iso in d["entries"]
     images = []
     if args.image:
-        for i, src in enumerate(args.image, 1):
-            rel = ingest_image(src, iso, i)
-            cap = ""
-            if args.caption and len(args.caption) >= i:
-                cap = args.caption[i - 1]
-            images.append({"src": rel, "caption": cap} if cap else {"src": rel})
+        images = ingest_all(args.image, args.caption, iso)
     elif existed and not args.drop_images:
         images = d["entries"][iso].get("images", [])
 
@@ -295,6 +338,7 @@ def cmd_add(args):
         "body": body,
         "words": wc,
         "images": images,
+        "comments": d["entries"].get(iso, {}).get("comments", []),
         "published": datetime.datetime.now().isoformat(timespec="seconds"),
     }
     save(d)
@@ -305,6 +349,52 @@ def cmd_add(args):
         print("  \"%s\"" % args.title)
     if args.push:
         push("Day %02d: %s" % (n, args.title or iso))
+
+def cmd_comment(args):
+    """Attach a later note to a day. Its words count toward the total."""
+    d = load()
+    if args.day:
+        date = date_for_day(d, args.day)
+    elif args.date:
+        date = datetime.date.fromisoformat(args.date)
+    else:
+        date = datetime.date.today()
+    iso = date.isoformat()
+    if iso not in d["entries"]:
+        sys.exit("no entry on %s yet, publish the day first" % iso)
+
+    if args.body_file:
+        with open(args.body_file) as f:
+            body = f.read()
+    elif args.body:
+        body = args.body
+    else:
+        print("paste the comment, then Ctrl-D:")
+        body = sys.stdin.read()
+    body = body.strip()
+    if not body:
+        sys.exit("empty comment")
+
+    entry = d["entries"][iso]
+    entry.setdefault("comments", [])
+    slot = "%s-c%d" % (iso, len(entry["comments"]) + 1)
+    when = args.on or datetime.date.today().isoformat()
+    entry["comments"].append({
+        "date": when,
+        "body": body,
+        "words": words(body),
+        "images": ingest_all(args.image, args.caption, slot),
+        "published": datetime.datetime.now().isoformat(timespec="seconds"),
+    })
+    save(d)
+    build(quiet=True)
+    n = day_number(d, date)
+    print("comment #%d on Day %02d (%s)" % (len(entry["comments"]), n, iso))
+    print("  %d words, dated %s" % (words(body), when))
+    print("  day total now %d words" % entry_words(entry))
+    if args.push:
+        push("Day %02d: comment" % n)
+
 
 def cmd_inbox(args):
     """List recent images across every drop-off point, newest first."""
@@ -344,7 +434,9 @@ def cmd_status(args):
         date = date_for_day(d, i)
         e = d["entries"].get(date.isoformat())
         if e:
-            mark, note = "[x]", "%3d words  %s" % (e.get("words", 0), e.get("title", ""))
+            nc = len(e.get("comments") or [])
+            extra = "  +%d comment%s" % (nc, "" if nc == 1 else "s") if nc else ""
+            mark, note = "[x]", "%3d words  %s%s" % (entry_words(e), e.get("title", ""), extra)
         elif date < today:
             mark, note = "[ ]", "missed"
         elif date == today:
@@ -365,6 +457,15 @@ def main():
     a.add_argument("--drop-images", action="store_true")
     a.add_argument("--push", action="store_true")
     a.set_defaults(fn=cmd_add)
+
+    c = sub.add_parser("comment", help="add a later note to a day")
+    c.add_argument("--date"); c.add_argument("--day", type=int)
+    c.add_argument("--on", help="date the comment is dated (default: today)")
+    c.add_argument("--body"); c.add_argument("--body-file")
+    c.add_argument("--image", action="append")
+    c.add_argument("--caption", action="append")
+    c.add_argument("--push", action="store_true")
+    c.set_defaults(fn=cmd_comment)
 
     b = sub.add_parser("build", help="regenerate index.html")
     b.set_defaults(fn=lambda args: build())

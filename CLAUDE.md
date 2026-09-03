@@ -66,6 +66,24 @@ do not keep retrying the mount. Use the Google Drive MCP instead: `search_files`
 it, `download_file_content` to get base64 (it will exceed the token cap and be written to
 a tool-results file), then decode that file to disk with Python. That path is reliable.
 
+### Commenting on a day
+
+Katka often has a follow-up a day or two later. These are **her own later notes**, not
+reader comments, and they render under the entry with a teal rule and a "Later" label.
+Their words count toward the running total.
+
+```
+python3 publish.py comment --day 1 --body-file /tmp/note.txt --push
+```
+
+- `--day N` / `--date YYYY-MM-DD` picks which entry it hangs off (default: today)
+- `--on YYYY-MM-DD` dates the note itself (default: today)
+- `--image` / `--caption` work exactly as they do for an entry
+- Comments survive a re-publish of the same day, so `add` never wipes them
+
+Reader comments would need a backend and are deliberately not built. If she asks for
+those, that is a different conversation (Giscus on GitHub Discussions is the cheap option).
+
 ### Other commands
 
 ```
@@ -77,8 +95,9 @@ python3 publish.py push -m "message"
 
 ## House rules
 
-- Target is 100 words, ±15. `publish.py` prints a warning outside that band and the
-  page shows the count in muted grey instead of teal.
+- Nominal target is 100 words, but entries run short and that is fine. The site reports
+  every word count the same way and never flags one as off target. Do not reintroduce
+  that; she does not want the page editorialising about her own writing.
 - **No em dashes** in any of Katka's published writing. Commas or parentheses.
 - Entry bodies support blank-line paragraphs, `**bold**`, `*italic*`, and
   `[text](url)` links. Everything else is escaped.
