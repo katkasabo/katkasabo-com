@@ -167,7 +167,7 @@ def render_entries(d):
         date = datetime.date.fromisoformat(iso)
         n = day_number(d, date)
         wc = e.get("words") or words(e.get("body", ""))
-        off = "" if abs(wc - TARGET_WORDS) <= TOLERANCE else " off"
+        off = ""
         figs = ""
         if e.get("images"):
             parts = []
@@ -299,9 +299,8 @@ def cmd_add(args):
     }
     save(d)
     build(quiet=True)
-    flag = "" if abs(wc - TARGET_WORDS) <= TOLERANCE else "   <- off target"
     print("%s Day %02d  %s" % ("updated" if existed else "added  ", n, iso))
-    print("  %d words%s" % (wc, flag))
+    print("  %d words" % wc)
     if args.title:
         print("  \"%s\"" % args.title)
     if args.push:

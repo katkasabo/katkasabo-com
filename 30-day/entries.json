@@ -14,6 +14,18 @@
         }
       ],
       "published": "2026-09-02T12:55:16"
+    },
+    "2026-09-03": {
+      "title": "Sock mahjong",
+      "body": "Folding kids laundry feels like the real world version of mahjong. Can you match the bright blue pair of socks?",
+      "words": 20,
+      "images": [
+        {
+          "src": "img/2026-09-03-1.jpg",
+          "caption": "Kids laundry sorted into piles across a bedroom floor."
+        }
+      ],
+      "published": "2026-09-03T16:32:55"
     }
   }
 }
