@@ -24,7 +24,16 @@ All internal links are **relative** (`../`, `30-day/`) so the site works at both
 
 ## How publishing works
 
-`30-day/entries.json` is the **source of truth**.
+`30-day/entries.json` is the **source of truth**. Shape:
+
+```
+entries: { "YYYY-MM-DD": { "posts": [ { title, body, words, images, comments } ] } }
+```
+
+A day holds a **list** of posts, because she sometimes posts twice in one day. Each post
+carries its own later `comments`. Anchors are `#day-03` for the first post of a day and
+`#day-03-2` for the second. Within a day, posts render newest first, same as the page.
+
 `30-day/index.html` is **generated** from `template.html` + `entries.json`.
 Never hand-edit `30-day/index.html`; edit the template or the data, then rebuild.
 
@@ -39,6 +48,8 @@ python3 publish.py add --title "Her title" --body-file /tmp/day.txt --push
 Defaults to today's date. Other options:
 
 - `--day 7` or `--date 2026-09-08` to target a specific day
+- `--new` publishes **another** post on a day that already has one. Without it, `add` on a
+  day with several posts refuses rather than guessing; `--post N` edits post N.
 - `--image inbox/photo.jpg` (repeatable) to attach images; they are copied into
   `30-day/img/`, renamed by date, and capped at 1600px by `sips`
 - `--caption "..."` (repeatable, pairs with `--image` in order)
@@ -76,7 +87,8 @@ Their words count toward the running total.
 python3 publish.py comment --day 1 --body-file /tmp/note.txt --push
 ```
 
-- `--day N` / `--date YYYY-MM-DD` picks which entry it hangs off (default: today)
+- `--day N` / `--date YYYY-MM-DD` picks which day it hangs off (default: today)
+- `--post N` picks which post that day; the default is the day's **latest** post
 - `--on YYYY-MM-DD` dates the note itself (default: today)
 - `--image` / `--caption` work exactly as they do for an entry
 - Comments survive a re-publish of the same day, so `add` never wipes them

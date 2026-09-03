@@ -129,6 +129,10 @@ h2{
 .cell.written .d{opacity:.85}
 .cell.written:hover{transform:translateY(-2px); box-shadow:var(--glow)}
 .cell.today{box-shadow:0 0 0 2px var(--ink)}
+.cell .x{
+  position:absolute; bottom:4px; right:6px; font-family:var(--mono);
+  font-size:8.5px; font-weight:700; line-height:1; opacity:.9
+}
 .cell.has-img::after{
   content:""; position:absolute; top:5px; right:5px; width:5px; height:5px;
   border-radius:50%; background:currentColor; opacity:.85
@@ -155,6 +159,10 @@ h2{
 .e-head{
   display:flex; align-items:center; gap:12px; flex-wrap:wrap;
   padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid var(--line-soft)
+}
+.e-nth{
+  font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--line); border-radius:4px; padding:3px 6px
 }
 .day-no{
   font-family:var(--mono); font-weight:700; font-size:10.5px; letter-spacing:.14em;
@@ -218,7 +226,7 @@ footer a:hover{color:var(--red)}
     <p class="eyebrow"><a href="../">Katka Sabo</a> &nbsp;/&nbsp; 30 days &middot; 100 words</p>
     <h1>Everything Is<span class="thin">Fair Game</span></h1>
     <p class="dek">One hundred words a day, every day, in public, from <em>2 September</em> to <em>1 October 2026</em>. No theme, that is the point. No editing myself into silence. The only rule is that it gets posted.</p>
-    <div class="stats"><div class="stat on"><b>2</b><span>of 30 written</span></div><div class="stat on"><b>2</b><span>day streak</span></div><div class="stat "><b>194</b><span>words so far</span></div><div class="stat "><b>28</b><span>days to go</span></div></div>
+    <div class="stats"><div class="stat on"><b>2</b><span>of 30 written</span></div><div class="stat on"><b>2</b><span>day streak</span></div><div class="stat "><b>306</b><span>words so far</span></div><div class="stat "><b>28</b><span>days to go</span></div></div>
   </header>
 
   <section>
@@ -236,7 +244,7 @@ footer a:hover{color:var(--red)}
         <div class="cell void" data-date="2026-08-31"><span class="n">31</span><span class="d">Aug</span></div>
         <div class="cell void" data-date="2026-09-01"><span class="n">1</span><span class="d">Sep</span></div>
         <a class="cell written has-img" href="#day-01" data-date="2026-09-02" title="Please take some lemons"><span class="n">2</span></a>
-        <a class="cell written has-img today" href="#day-02" data-date="2026-09-03" title="Sock mahjong"><span class="n">3</span></a>
+        <a class="cell written has-img multi today" href="#day-02" data-date="2026-09-03" title="Sock mahjong / The next big thing"><span class="n">3</span><span class="x">2</span></a>
         <div class="cell future" data-date="2026-09-04"><span class="n">4</span></div>
         <div class="cell future" data-date="2026-09-05"><span class="n">5</span></div>
         <div class="cell future" data-date="2026-09-06"><span class="n">6</span></div>
@@ -274,9 +282,38 @@ footer a:hover{color:var(--red)}
 
   <section>
     <div class="sec-head"><h2>The writing</h2></div>
+    <article class="entry" id="day-02-2">
+      <div class="e-head">
+        <span class="day-no">Day 02</span><span class="e-nth">2 of 2</span>
+        <span class="e-date">Thursday, 3 September 2026</span>
+        <a class="e-permalink" href="#day-02-2">#</a>
+        <span class="e-wc">94 words</span>
+      </div>
+      <h3 class="e-title">The next big thing</h3>
+      <div class="e-body">
+        <p>I haven&#x27;t been so excited about a pop star in 25 years!</p>
+        <p>Since my pre teen, short lived boy band obsession. Was it Backstreet Boys back then? Or the Czech Lunetic?? I don&#x27;t even remember.</p>
+        <p>I digressed though -</p>
+        <p>I am joining the chorus of other Adela fans, fawning over her, naming her the next big thing in the lineage of artists such as Madonna, Beyonce, Lady Gaga and Ariana Grande.</p>
+        <p>And her being a Slovak girl, who moved to California to follow her dreams.. makes my rooting for her even more personal 😍</p>
+      </div>
+      <div class="e-figs"><figure><img src="img/2026-09-03-p2-1.png" alt="Order confirmation for PRIMA, the exclusive bonus track edition." loading="lazy"><figcaption>Order confirmation for PRIMA, the exclusive bonus track edition.</figcaption></figure></div>
+      <div class="e-comments">
+        <div class="comment">
+          <div class="c-head">
+            <span class="c-label">Later</span>
+            <span class="c-date">3 September</span>
+            <span class="c-wc">18 words</span>
+          </div>
+          <div class="c-body">
+            <p>Her debut album drops tomorrow, Friday 4 September. I seriously can&#x27;t believe how excited I am for her!</p>
+          </div>
+        </div>
+      </div>
+    </article>
     <article class="entry" id="day-02">
       <div class="e-head">
-        <span class="day-no">Day 02</span>
+        <span class="day-no">Day 02</span><span class="e-nth">1 of 2</span>
         <span class="e-date">Thursday, 3 September 2026</span>
         <a class="e-permalink" href="#day-02">#</a>
         <span class="e-wc">20 words</span>

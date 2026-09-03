@@ -129,6 +129,10 @@ h2{
 .cell.written .d{opacity:.85}
 .cell.written:hover{transform:translateY(-2px); box-shadow:var(--glow)}
 .cell.today{box-shadow:0 0 0 2px var(--ink)}
+.cell .x{
+  position:absolute; bottom:4px; right:6px; font-family:var(--mono);
+  font-size:8.5px; font-weight:700; line-height:1; opacity:.9
+}
 .cell.has-img::after{
   content:""; position:absolute; top:5px; right:5px; width:5px; height:5px;
   border-radius:50%; background:currentColor; opacity:.85
@@ -155,6 +159,10 @@ h2{
 .e-head{
   display:flex; align-items:center; gap:12px; flex-wrap:wrap;
   padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid var(--line-soft)
+}
+.e-nth{
+  font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--line); border-radius:4px; padding:3px 6px
 }
 .day-no{
   font-family:var(--mono); font-weight:700; font-size:10.5px; letter-spacing:.14em;

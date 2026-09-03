@@ -4,37 +4,66 @@
   "days": 30,
   "entries": {
     "2026-09-02": {
-      "title": "Please take some lemons",
-      "body": "Welcome to my first day of Everything Is Fair Game blogging.\n\nI love what this lady did. She's sitting quietly at co-work but her desk says \"Please Take Some Lemons, Basils, Thyme...\".\n\nThis is breaking the pattern. Why is someone just offering something like this? It opens the curiosity loop. Unexplained generosity. So much better than \"come talk to me about XYZ\".\n\nHow can I swipe this and use it myself? When I want people to do certain action, instead of straight up asking for it, how can I set up their curiosity in a way that leads to them taking the action to close their curiosity loop.",
-      "words": 108,
-      "images": [
+      "posts": [
         {
-          "src": "img/2026-09-02-1.jpg",
-          "caption": "A coworking desk turned into a giveaway stand. Lemons, cherry tomatoes, jars of basil and thyme, cups, and a small hand drawn sign."
-        }
-      ],
-      "published": "2026-09-02T12:55:16",
-      "comments": [
-        {
-          "date": "2026-09-03",
-          "body": "So apparently her name is Shirley, she works at Rivian (the co-work I was in is located inside the Rivian dealership), and what she brought is the surplus produce from her own backyard. I couldn't resist and chatted her up before I had to leave. There were 2 other people talking to her before that. Clearly I was not the only one curiosity-looped. This $hit works!",
-          "words": 66,
-          "images": [],
-          "published": "2026-09-03T16:37:00"
+          "title": "Please take some lemons",
+          "body": "Welcome to my first day of Everything Is Fair Game blogging.\n\nI love what this lady did. She's sitting quietly at co-work but her desk says \"Please Take Some Lemons, Basils, Thyme...\".\n\nThis is breaking the pattern. Why is someone just offering something like this? It opens the curiosity loop. Unexplained generosity. So much better than \"come talk to me about XYZ\".\n\nHow can I swipe this and use it myself? When I want people to do certain action, instead of straight up asking for it, how can I set up their curiosity in a way that leads to them taking the action to close their curiosity loop.",
+          "words": 108,
+          "images": [
+            {
+              "src": "img/2026-09-02-1.jpg",
+              "caption": "A coworking desk turned into a giveaway stand. Lemons, cherry tomatoes, jars of basil and thyme, cups, and a small hand drawn sign."
+            }
+          ],
+          "published": "2026-09-02T12:55:16",
+          "comments": [
+            {
+              "date": "2026-09-03",
+              "body": "So apparently her name is Shirley, she works at Rivian (the co-work I was in is located inside the Rivian dealership), and what she brought is the surplus produce from her own backyard. I couldn't resist and chatted her up before I had to leave. There were 2 other people talking to her before that. Clearly I was not the only one curiosity-looped. This $hit works!",
+              "words": 66,
+              "images": [],
+              "published": "2026-09-03T16:37:00"
+            }
+          ]
         }
       ]
     },
     "2026-09-03": {
-      "title": "Sock mahjong",
-      "body": "Folding kids laundry feels like the real world version of mahjong. Can you match the bright blue pair of socks?",
-      "words": 20,
-      "images": [
+      "posts": [
         {
-          "src": "img/2026-09-03-1.jpg",
-          "caption": "Kids laundry sorted into piles across a bedroom floor."
+          "title": "Sock mahjong",
+          "body": "Folding kids laundry feels like the real world version of mahjong. Can you match the bright blue pair of socks?",
+          "words": 20,
+          "images": [
+            {
+              "src": "img/2026-09-03-1.jpg",
+              "caption": "Kids laundry sorted into piles across a bedroom floor."
+            }
+          ],
+          "published": "2026-09-03T16:32:55"
+        },
+        {
+          "title": "The next big thing",
+          "body": "I haven't been so excited about a pop star in 25 years!\n\nSince my pre teen, short lived boy band obsession. Was it Backstreet Boys back then? Or the Czech Lunetic?? I don't even remember.\n\nI digressed though -\n\nI am joining the chorus of other Adela fans, fawning over her, naming her the next big thing in the lineage of artists such as Madonna, Beyonce, Lady Gaga and Ariana Grande.\n\nAnd her being a Slovak girl, who moved to California to follow her dreams.. makes my rooting for her even more personal 😍",
+          "words": 94,
+          "images": [
+            {
+              "src": "img/2026-09-03-p2-1.png",
+              "caption": "Order confirmation for PRIMA, the exclusive bonus track edition."
+            }
+          ],
+          "comments": [
+            {
+              "date": "2026-09-03",
+              "body": "Her debut album drops tomorrow, Friday 4 September. I seriously can't believe how excited I am for her!",
+              "words": 18,
+              "images": [],
+              "published": "2026-09-03T16:52:09"
+            }
+          ],
+          "published": "2026-09-03T16:52:03"
         }
-      ],
-      "published": "2026-09-03T16:32:55"
+      ]
     }
   }
 }
