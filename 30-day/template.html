@@ -71,8 +71,14 @@ h1 .thin{
   background:var(--grad); -webkit-background-clip:text; background-clip:text;
   color:transparent
 }
-.dek{font-size:17.5px; color:var(--muted); max-width:52ch; margin:0; font-weight:400}
+.dek{font-size:17.5px; color:var(--muted); max-width:54ch; margin:0; font-weight:400}
+.dek p{margin:0 0 .8em}
+.dek p:last-child{margin-bottom:0}
 .dek em{color:var(--ink); font-style:normal; font-weight:700}
+.dek .beat{
+  font-family:var(--display); font-weight:700; font-size:20px; letter-spacing:-.02em;
+  color:var(--red); margin:0 0 .7em
+}
 
 /* ---------- stats ---------- */
 .stats{
@@ -225,7 +231,13 @@ footer a:hover{color:var(--red)}
   <header class="mast">
     <p class="eyebrow"><a href="../">Katka Sabo</a> &nbsp;/&nbsp; 30 days &middot; 100 words</p>
     <h1>Everything Is<span class="thin">Fair Game</span></h1>
-    <p class="dek">One hundred words a day, every day, in public, from <em>2 September</em> to <em>1 October 2026</em>. No theme, that is the point. No editing myself into silence. The only rule is that it gets posted.</p>
+    <div class="dek">
+      <p>One hundred words a day, every day, in public, from <em>2 September</em> to <em>1 October 2026</em>. No theme, that is the point. No content pillars or posturing or expertise showcasing.</p>
+      <p>No public persona building, glitzy personal branding.</p>
+      <p class="beat">Nope.</p>
+      <p>Blogging, posting, content creating - it's all creative self expression and the only way to get good at it is getting the "intentionally bad art" reps in.</p>
+      <p>In my own corner of the Internet but still public, not living inside of my private Google Docs.</p>
+    </div>
     <!--STATS-->
   </header>
 
