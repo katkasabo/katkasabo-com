@@ -113,6 +113,11 @@ python3 publish.py push -m "message"
 - **No em dashes** in any of Katka's published writing. Commas or parentheses.
 - Entry bodies support blank-line paragraphs, `**bold**`, `*italic*`, and
   `[text](url)` links. Everything else is escaped.
+- **Inline images.** A line containing only `[[img N]]` drops the post's Nth image at that
+  point in the text, full text-column width, caption underneath. N is the 1-based position
+  in the order the `--image` flags were passed. Images not referenced inline still render
+  in a group at the foot of the post, centred and height-capped. The markers do not count
+  as words.
 
 ## Design system
 

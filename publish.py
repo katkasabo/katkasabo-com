@@ -71,6 +71,7 @@ def posts(day):
     return day.get("posts", [])
 
 def words(text):
+    text = re.sub(r"^\[\[img\s+\d+\]\]$", "", text, flags=re.M)
     return len([w for w in re.split(r"\s+", text.strip()) if w])
 
 def post_words(p):
@@ -142,18 +143,28 @@ def ingest_all(images, captions, slot):
 
 # ---------- rendering ----------
 
-def render_body(text):
-    out = []
+def render_body(text, images=None):
+    """Returns (html, indices_used). A line of just [[img N]] drops image N in place."""
+    out, used = [], set()
     for b in [x.strip() for x in re.split(r"\n\s*\n", text.strip()) if x.strip()]:
+        m = IMG_TOKEN.match(b)
+        if m:
+            i = int(m.group(1))
+            if images and 1 <= i <= len(images):
+                used.add(i)
+                out.append(render_figs([images[i - 1]], "", inline=True).strip())
+            continue
         b = html.escape(b).replace("\n", "<br>")
         b = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", b)
         b = re.sub(r"(?<!\*)\*([^*]+)\*(?!\*)", r"<em>\1</em>", b)
         b = re.sub(r"\[([^\]]+)\]\((https?://[^)]+)\)",
                    r'<a href="\2" rel="noopener">\1</a>', b)
         out.append("<p>%s</p>" % b)
-    return "\n        ".join(out)
+    return "\n        ".join(out), used
 
-def render_figs(images, fallback_alt):
+IMG_TOKEN = re.compile(r"^\[\[img\s+(\d+)\]\]$")
+
+def render_figs(images, fallback_alt, inline=False):
     if not images:
         return ""
     parts = []
@@ -163,7 +174,7 @@ def render_figs(images, fallback_alt):
         cap_html = ("<figcaption>%s</figcaption>" % html.escape(cap)) if cap else ""
         parts.append('<figure><img src="%s" alt="%s" loading="lazy">%s</figure>'
                      % (html.escape(src), html.escape(cap or fallback_alt), cap_html))
-    return '\n      <div class="e-figs">%s</div>' % "".join(parts)
+    return '\n      <div class="e-figs%s">%s</div>' % (" inline" if inline else "", "".join(parts))
 
 def render_comments(p):
     cs = p.get("comments") or []
@@ -171,6 +182,8 @@ def render_comments(p):
         return ""
     out = []
     for c in cs:
+        c_body, c_used = render_body(c.get("body", ""), c.get("images"))
+        c_left = [im for i, im in enumerate(c.get("images") or [], 1) if i not in c_used]
         when = c.get("date", "")
         try:
             when = datetime.date.fromisoformat(when).strftime("%-d %B")
@@ -186,7 +199,7 @@ def render_comments(p):
             '          <div class="c-body">\n            %s\n          </div>%s\n'
             '        </div>'
             % (html.escape(when), c.get("words") or words(c.get("body", "")),
-               render_body(c.get("body", "")), render_figs(c.get("images"), "")))
+               c_body, render_figs(c_left, "")))
     return ('\n      <div class="e-comments">\n        %s\n      </div>'
             % "\n        ".join(out))
 
@@ -248,6 +261,8 @@ def render_entries(d):
         for rev_i, p in enumerate(reversed(ps)):
             i = len(ps) - rev_i                      # 1-based position in publish order
             anchor = "day-%02d" % n if i == 1 else "day-%02d-%d" % (n, i)
+            body_html, used = render_body(p.get("body", ""), p.get("images"))
+            leftover = [im for j, im in enumerate(p.get("images") or [], 1) if j not in used]
             ordinal = ('<span class="e-nth">%d of %d</span>' % (i, len(ps))) if len(ps) > 1 else ""
             title = ('<h3 class="e-title">%s</h3>' % html.escape(p["title"])) if p.get("title") else ""
             out.append(
@@ -262,8 +277,8 @@ def render_entries(d):
                 '    </article>'
                 % (anchor, n, ordinal, date.strftime("%A, %-d %B %Y"), anchor,
                    p.get("words") or words(p.get("body", "")), title,
-                   render_body(p.get("body", "")),
-                   render_figs(p.get("images"), p.get("title", "")),
+                   body_html,
+                   render_figs(leftover, p.get("title", "")),
                    render_comments(p)))
     return "\n    ".join(out)
 
